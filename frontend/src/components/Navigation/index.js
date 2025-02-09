@@ -45,7 +45,8 @@ export default function Navigation() {
         boxShadow: 0,
         bgcolor: 'transparent',
         backgroundImage: 'none',
-        mt: 'calc(var(--template-frame-height, 0px) + 28px)',
+        pt: 'calc(var(--template-frame-height, 0px) + 28px)',
+        backdropFilter: 'blur(10px)',
       }}
     >
       <Container maxWidth='lg'>

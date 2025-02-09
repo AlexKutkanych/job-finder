@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Footer from './components/Footer';
 import Search from './pages/Search';
+import NotFound from './pages/NotFound';
 
 export default function Blog(props) {
   return (
@@ -14,12 +15,13 @@ export default function Blog(props) {
       <Container
         maxWidth='lg'
         component='main'
-        sx={{ display: 'flex', flexDirection: 'column', my: 16, gap: 4 }}
+        sx={{ display: 'flex', flexDirection: 'column', my: 16, gap: 2 }}
       >
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/search' element={<Search />} />
           <Route path='/about' element={<About />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Container>
       <Footer />
