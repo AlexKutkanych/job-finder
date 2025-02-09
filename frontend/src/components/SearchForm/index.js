@@ -6,6 +6,9 @@ import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import countries from '../../mock/countries';
+import SearchField from '../SearchField';
+import CountryCitySearch from '../CountryCitySearch';
+import SearchButton from '../SearchButton';
 
 const StyledForm = styled('form')(({ theme }) => ({
   width: '80%',
@@ -14,6 +17,13 @@ const StyledForm = styled('form')(({ theme }) => ({
 export default function SearchForm() {
   const [search, setSearch] = useState({ jobCountry: 'all', jobSearch: '' });
   const [isLoading, setIsLoading] = useState(false);
+
+  const handleCountryChange = (values) => {
+    setSearch((state) => ({
+      ...state,
+      ...values,
+    }));
+  };
 
   const handleChange = (event) => {
     console.log(event);
@@ -37,51 +47,9 @@ export default function SearchForm() {
         useFlexGap
         sx={{ pt: 2, width: { xs: '100%' } }}
       >
-        <TextField
-          id='job-search'
-          hiddenLabel
-          size='small'
-          variant='outlined'
-          aria-label='Enter your dream job'
-          placeholder='Your desired job'
-          fullWidth
-          slotProps={{
-            htmlInput: {
-              autoComplete: 'off',
-              'aria-label': 'Enter your dream job',
-            },
-          }}
-          name='jobSearch'
-          value={search.jobSearch || ''}
-          onChange={handleChange}
-        />
-
-        <Select
-          labelId='demo-simple-select-label'
-          id='job-country'
-          value={search.jobCountry || 'all'}
-          name='jobCountry'
-          onChange={handleChange}
-          sx={{ minWidth: '150px', height: '40px' }}
-        >
-          {countries.map(({ id, label }) => (
-            <MenuItem key={id} value={id}>
-              {label}
-            </MenuItem>
-          ))}
-        </Select>
-
-        <Button
-          variant='contained'
-          color='primary'
-          size='small'
-          type='submit'
-          sx={{ minWidth: '90px' }}
-          loading={isLoading}
-          loadingIndicator='Loading…'
-        >
-          Search
-        </Button>
+        <SearchField handleChange={handleChange} jobSearch={search.jobSearch} />
+        <CountryCitySearch values={search} handleChange={handleCountryChange} />
+        <SearchButton label='Search' isLoading={isLoading} />
       </Stack>
     </StyledForm>
   );
