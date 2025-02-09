@@ -26,7 +26,6 @@ export default function SearchForm() {
   };
 
   const handleChange = (event) => {
-    console.log(event);
     setSearch((state) => ({
       ...state,
       [event.target.name]: event.target.value,

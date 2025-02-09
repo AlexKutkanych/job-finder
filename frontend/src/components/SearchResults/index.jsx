@@ -8,7 +8,7 @@ export default function SearchResults({ jobs }) {
   return (
     <Paper>
       <Stack spacing={2}>
-        {jobs.map((props) => (
+        {jobs?.map((props) => (
           <JobCard key={props.id} {...props} />
         ))}
       </Stack>

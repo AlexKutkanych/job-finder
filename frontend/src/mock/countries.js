@@ -4,7 +4,7 @@ const countries = [
     label: 'All countries',
   },
   {
-    id: 'de',
+    id: 'DE',
     label: 'Germany',
     cities: [
       {
@@ -12,17 +12,17 @@ const countries = [
         label: 'All cities',
       },
       {
-        id: 'berlin',
+        id: 'Berlin',
         label: 'Berlin',
       },
       {
-        id: 'munich',
+        id: 'Munich',
         label: 'Munich',
       },
     ],
   },
   {
-    id: 'pl',
+    id: 'PL',
     label: 'Poland',
     cities: [
       {
@@ -30,11 +30,11 @@ const countries = [
         label: 'All cities',
       },
       {
-        id: 'warsaw',
+        id: 'Warsaw',
         label: 'Warsaw',
       },
       {
-        id: 'krakow',
+        id: 'Krakow',
         label: 'Krakow',
       },
     ],

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import { Stack, Typography } from '@mui/material';
@@ -9,6 +9,7 @@ import visaOptions from '../../mock/visaOptions';
 import SearchButton from '../SearchButton';
 import ActionButton from '../ActionButton';
 import jobFields from '../../mock/jobFields';
+import { useSearch } from '../../context/SearchContext';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: '#fff',
@@ -21,44 +22,38 @@ const Item = styled(Paper)(({ theme }) => ({
   }),
 }));
 
-const initialSearch = {
-  jobCountry: 'all',
-  jobCity: 'all',
-  jobSearch: '',
-  visa: 'unknown',
-  jobField: 'all',
-};
-
-export default function SearchPanel(props) {
-  const [search, setSearch] = useState(initialSearch);
-  const [isLoading, setIsLoading] = useState(false);
+export default function SearchPanel() {
+  const {
+    initialSearchParams,
+    searchParams,
+    setSearchParams,
+    searchJobs,
+    isLoading,
+  } = useSearch();
 
   const handleChange = (event) => {
-    console.log(event);
-    setSearch((state) => ({
+    setSearchParams((state) => ({
       ...state,
       [event.target.name]: event.target.value,
     }));
-    setIsLoading(false);
   };
 
   const handleCountryChange = (values) => {
-    setSearch((state) => ({
+    setSearchParams((state) => ({
       ...state,
       ...values,
     }));
-    setIsLoading(false);
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log(search, 'searching...');
-    setIsLoading(true);
+    console.log(searchParams, 'searching...');
+    searchJobs(searchParams);
   };
 
   const handleClear = () => {
-    setSearch(initialSearch);
-    setIsLoading(false);
+    setSearchParams(initialSearchParams);
+    searchJobs(initialSearchParams);
   };
 
   return (
@@ -66,17 +61,17 @@ export default function SearchPanel(props) {
       <form onSubmit={handleSearch}>
         <Stack spacing={2}>
           <Typography variant='span' sx={{ textAlign: 'left' }}>
-            Search Job:
+            Search Jobs:
           </Typography>
           <SearchField
             handleChange={handleChange}
-            jobSearch={search.jobSearch}
+            jobSearch={searchParams?.jobSearch}
           />
           <CountryCitySearch
             handleChange={handleCountryChange}
             values={{
-              jobCountry: search?.jobCountry,
-              jobCity: search?.jobCity,
+              jobCountry: searchParams?.jobCountry,
+              jobCity: searchParams?.jobCity,
             }}
             showCitySelect
           />
@@ -85,14 +80,14 @@ export default function SearchPanel(props) {
             label='Visa'
             options={visaOptions}
             onChange={handleChange}
-            value={search?.visa || 'unknown'}
+            value={searchParams?.visa || 'unknown'}
           />
           <SearchSelect
             id='jobField'
             label='Job Field'
             options={jobFields}
             onChange={handleChange}
-            value={search?.jobField || 'all'}
+            value={searchParams?.jobField || 'all'}
           />
           <SearchButton label='Search' isLoading={isLoading} />
           <ActionButton label='Clear' variant='outline' onClick={handleClear} />

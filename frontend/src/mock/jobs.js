@@ -1,4 +1,4 @@
-const jobs = [
+const allJobs = [
   {
     id: 101,
     title: 'Frontend Developer',
@@ -7,6 +7,7 @@ const jobs = [
       full: 'Munich, Germany',
       country: 'Germany',
       city: 'Munich',
+      code: 'DE',
     },
     type: 'Full-time',
     salary: '€80,000 - €100,000 per year',
@@ -45,6 +46,7 @@ const jobs = [
       full: 'Berlin, Germany',
       country: 'Germany',
       city: 'Berlin',
+      code: 'DE',
     },
     type: 'Full-time',
     salary: '€70,000 - €90,000 per year',
@@ -84,6 +86,7 @@ const jobs = [
       full: 'Warsaw, Poland',
       country: 'Poland',
       city: 'Warsaw',
+      code: 'PL',
     },
     type: 'Full-time',
     salary: '€40,000 - €50,000 per year',
@@ -117,4 +120,4 @@ const jobs = [
   },
 ];
 
-module.exports = jobs;
+module.exports = allJobs;

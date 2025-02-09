@@ -7,24 +7,27 @@ import About from './pages/About';
 import Footer from './components/Footer';
 import Search from './pages/Search';
 import NotFound from './pages/NotFound';
+import { SearchProvider } from './context/SearchContext';
 
-export default function Blog(props) {
+export default function JobSearch() {
   return (
-    <Router>
-      <Navigation />
-      <Container
-        maxWidth='lg'
-        component='main'
-        sx={{ display: 'flex', flexDirection: 'column', my: 16, gap: 2 }}
-      >
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/search' element={<Search />} />
-          <Route path='/about' element={<About />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Container>
-      <Footer />
-    </Router>
+    <SearchProvider>
+      <Router>
+        <Navigation />
+        <Container
+          maxWidth='lg'
+          component='main'
+          sx={{ display: 'flex', flexDirection: 'column', my: 16, gap: 2 }}
+        >
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/search' element={<Search />} />
+            <Route path='/about' element={<About />} />
+            <Route path='*' element={<NotFound />} />
+          </Routes>
+        </Container>
+        <Footer />
+      </Router>
+    </SearchProvider>
   );
 }
