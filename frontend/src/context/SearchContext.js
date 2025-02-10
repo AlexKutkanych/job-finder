@@ -14,6 +14,8 @@ const SearchContext = createContext(initialSearchParams);
 const SearchProvider = ({ children }) => {
   const [searchParams, setSearchParams] = useState(initialSearchParams);
   const [jobs, setJobs] = useState(allJobs);
+  const [currentJob, setCurrentJob] = useState(null);
+  const [cities, setCities] = useState([{ id: 'all', label: 'All cities' }]);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -52,7 +54,7 @@ const SearchProvider = ({ children }) => {
         const isJobSearchMatch = title
           .toLowerCase()
           .includes(newSearch.jobSearch.toLowerCase());
-        console.log('sdfsdf');
+
         return (
           isCountryMatch &&
           isCityMatch &&
@@ -65,15 +67,29 @@ const SearchProvider = ({ children }) => {
     setJobs(filterJobs);
   };
 
+  const fetchJobById = (id) => {
+    const job = jobs.find((job) => job.id === +id);
+    setCurrentJob(job);
+  };
+
+  const resetSearchParams = () => {
+    setSearchParams(initialSearchParams);
+  };
+
   return (
     <SearchContext.Provider
       value={{
         initialSearchParams,
         searchParams,
         setSearchParams,
+        resetSearchParams,
+        cities,
+        setCities,
         jobs,
         searchJobs,
         isLoading,
+        fetchJobById,
+        currentJob,
       }}
     >
       {children}

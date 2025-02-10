@@ -2,11 +2,10 @@ import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Link } from '@mui/material';
+import JobLabels from '../JobLabels';
 
 export default function JobCard({
   id,
@@ -20,7 +19,7 @@ export default function JobCard({
   experienceLevel,
 }) {
   return (
-    <Card sx={{}}>
+    <Card>
       <CardContent sx={{ textAlign: 'left' }}>
         <Link
           href={`/job/${id}`}
@@ -30,7 +29,7 @@ export default function JobCard({
           {title}
         </Link>
         <Typography gutterBottom component='p'>
-          {company}
+          {company?.name}
         </Typography>
         <Typography
           variant='body2'
@@ -42,21 +41,11 @@ export default function JobCard({
         <Typography variant='body2' sx={{ color: 'text.secondary' }}>
           {description}
         </Typography>
-        <Stack direction='row' spacing={1} sx={{ mt: 1 }}>
-          {[salary, type, visa?.label, experienceLevel].reduce((acc, item) => {
-            if (!item) return acc;
-            acc.push(<Chip label={item} color='primary' variant='outlined' />);
-            return acc;
-          }, [])}
-        </Stack>
+        <JobLabels labels={[salary, type, visa?.label, experienceLevel]} />
       </CardContent>
       <CardActions sx={{ px: 2, paddingTop: 0 }}>
-        <Button href={`/job/${id}`} size='small'>
-          Learn More
-        </Button>
-        <Button size='small' color='secondary'>
-          Save
-        </Button>
+        <Button href={`/job/${id}`} label='Learn More' size='small' />
+        <Button size='small' label='Save' color='secondary' />
       </CardActions>
     </Card>
   );

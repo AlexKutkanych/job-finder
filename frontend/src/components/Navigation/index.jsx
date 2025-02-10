@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { alpha, styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -31,7 +31,7 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 }));
 
 export default function Navigation() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
@@ -76,10 +76,22 @@ export default function Navigation() {
               alignItems: 'center',
             }}
           >
-            <Button color='primary' variant='text' size='small'>
+            <Button
+              to='/sign-in'
+              component={Link}
+              color='primary'
+              variant='text'
+              size='small'
+            >
               Sign in
             </Button>
-            <Button color='primary' variant='contained' size='small'>
+            <Button
+              to='/sign-up'
+              component={Link}
+              color='primary'
+              variant='contained'
+              size='small'
+            >
               Sign up
             </Button>
           </Box>

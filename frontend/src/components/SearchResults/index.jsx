@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Paper from '@mui/material/Paper';
-import { styled } from '@mui/material/styles';
 import { Stack } from '@mui/material';
 import JobCard from '../JobCard';
 

@@ -1,5 +1,12 @@
 import * as React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
 import Container from '@mui/material/Container';
 import Navigation from './components/Navigation';
 import Home from './pages/Home';
@@ -8,26 +15,36 @@ import Footer from './components/Footer';
 import Search from './pages/Search';
 import NotFound from './pages/NotFound';
 import { SearchProvider } from './context/SearchContext';
+import JobPage from './pages/JobPage';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
 
-export default function JobSearch() {
+export default function App() {
+  const queryClient = new QueryClient();
+  console.log(process.env.REACT_APP_API_PATH, 'process.env.REACT_APP_API_PATH');
   return (
-    <SearchProvider>
-      <Router>
-        <Navigation />
-        <Container
-          maxWidth='lg'
-          component='main'
-          sx={{ display: 'flex', flexDirection: 'column', my: 16, gap: 2 }}
-        >
-          <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/search' element={<Search />} />
-            <Route path='/about' element={<About />} />
-            <Route path='*' element={<NotFound />} />
-          </Routes>
-        </Container>
-        <Footer />
-      </Router>
-    </SearchProvider>
+    <QueryClientProvider client={queryClient}>
+      <SearchProvider>
+        <Router>
+          <Navigation />
+          <Container
+            maxWidth='lg'
+            component='main'
+            sx={{ display: 'flex', flexDirection: 'column', my: 16, gap: 2 }}
+          >
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path='/search' element={<Search />} />
+              <Route path='/job/:id' element={<JobPage />} />
+              <Route path='/about' element={<About />} />
+              <Route path='/sign-in' element={<SignIn />} />
+              <Route path='/sign-up' element={<SignUp />} />
+              <Route path='*' element={<NotFound />} />
+            </Routes>
+          </Container>
+          <Footer />
+        </Router>
+      </SearchProvider>
+    </QueryClientProvider>
   );
 }

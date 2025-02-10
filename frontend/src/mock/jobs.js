@@ -2,7 +2,11 @@ const allJobs = [
   {
     id: 101,
     title: 'Frontend Developer',
-    company: 'Tech Innovators Inc.',
+    company: {
+      name: 'Tech Innovators Inc.',
+      logo: 'https://via.placeholder.com/150',
+      employees: '50-100',
+    },
     location: {
       full: 'Munich, Germany',
       country: 'Germany',
@@ -41,7 +45,11 @@ const allJobs = [
   {
     id: 102,
     title: 'Backend Developer',
-    company: 'Global Tech Solutions',
+    company: {
+      name: 'Global Tech Solutions',
+      logo: 'https://via.placeholder.com/150',
+      employees: '100-500',
+    },
     location: {
       full: 'Berlin, Germany',
       country: 'Germany',
@@ -81,7 +89,11 @@ const allJobs = [
   {
     id: 103,
     title: 'Data Analyst',
-    company: 'Data Insights Ltd.',
+    company: {
+      name: 'Data Insights Ltd.',
+      logo: 'https://via.placeholder.com/150',
+      employees: '500-1000',
+    },
     location: {
       full: 'Warsaw, Poland',
       country: 'Poland',

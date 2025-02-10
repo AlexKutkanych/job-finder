@@ -27,6 +27,7 @@ export default function SearchPanel() {
     initialSearchParams,
     searchParams,
     setSearchParams,
+    resetSearchParams,
     searchJobs,
     isLoading,
   } = useSearch();
@@ -52,7 +53,7 @@ export default function SearchPanel() {
   };
 
   const handleClear = () => {
-    setSearchParams(initialSearchParams);
+    resetSearchParams();
     searchJobs(initialSearchParams);
   };
 

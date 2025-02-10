@@ -3,8 +3,9 @@ import Stack from '@mui/material/Stack';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import countries from '../../mock/countries';
+import { useSearch } from '../../context/SearchContext';
 
-const defaultCities = [{ id: 'all', label: 'All cities' }];
+const defaultCity = [{ id: 'all', label: 'All cities' }];
 
 export default function CountryCitySearch({
   values,
@@ -12,12 +13,15 @@ export default function CountryCitySearch({
   showCitySelect = false,
 }) {
   const [search, setSearch] = useState(values);
-  const [cities, setCities] = useState(defaultCities);
-  const [disableCities, setDisableCities] = useState(true);
+  const [disableCities, setDisableCities] = useState(!showCitySelect);
+
+  const { cities, setCities } = useSearch();
 
   useEffect(() => {
     setSearch((state) => ({ ...state, ...values }));
   }, [values]);
+
+  console.log(cities, 'cities');
 
   const onChange = (event) => {
     const { name, value } = event.target;
@@ -26,7 +30,7 @@ export default function CountryCitySearch({
       [name]: value,
     }));
 
-    if (name === 'jobCountry' && showCitySelect) {
+    if (name === 'jobCountry') {
       setDisableCities(value === 'all');
       filterCities(value);
       handleChange({ ...search, [name]: value, jobCity: 'all' });
@@ -37,7 +41,7 @@ export default function CountryCitySearch({
 
   const filterCities = (countryId) => {
     const selectedCountry = countries.find(({ id }) => id === countryId);
-    setCities(selectedCountry.cities || defaultCities);
+    setCities(selectedCountry.cities || defaultCity);
     setSearch((state) => ({
       ...state,
       jobCity: 'all',

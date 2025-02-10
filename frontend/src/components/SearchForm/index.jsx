@@ -1,32 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { styled } from '@mui/material/styles';
-import Button from '@mui/material/Button';
+import { useNavigate } from 'react-router';
 import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import countries from '../../mock/countries';
 import SearchField from '../SearchField';
 import CountryCitySearch from '../CountryCitySearch';
 import SearchButton from '../SearchButton';
+import { useSearch } from '../../context/SearchContext';
 
 const StyledForm = styled('form')(({ theme }) => ({
   width: '80%',
 }));
 
 export default function SearchForm() {
-  const [search, setSearch] = useState({ jobCountry: 'all', jobSearch: '' });
-  const [isLoading, setIsLoading] = useState(false);
+  const { searchParams, setSearchParams, isLoading } = useSearch();
+  const navigate = useNavigate();
 
   const handleCountryChange = (values) => {
-    setSearch((state) => ({
+    setSearchParams((state) => ({
       ...state,
       ...values,
     }));
   };
 
   const handleChange = (event) => {
-    setSearch((state) => ({
+    setSearchParams((state) => ({
       ...state,
       [event.target.name]: event.target.value,
     }));
@@ -34,8 +31,7 @@ export default function SearchForm() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log(search, 'searching...');
-    setIsLoading(true);
+    navigate('/search');
   };
 
   return (
@@ -46,8 +42,14 @@ export default function SearchForm() {
         useFlexGap
         sx={{ pt: 2, width: { xs: '100%' } }}
       >
-        <SearchField handleChange={handleChange} jobSearch={search.jobSearch} />
-        <CountryCitySearch values={search} handleChange={handleCountryChange} />
+        <SearchField
+          handleChange={handleChange}
+          jobSearch={searchParams?.jobSearch}
+        />
+        <CountryCitySearch
+          values={searchParams}
+          handleChange={handleCountryChange}
+        />
         <SearchButton label='Search' isLoading={isLoading} />
       </Stack>
     </StyledForm>

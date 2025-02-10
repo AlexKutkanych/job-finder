@@ -1,12 +1,21 @@
 import * as React from 'react';
+import { useLocation } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import SearchForm from '../../components/SearchForm';
+import { useSearch } from '../../context/SearchContext';
 
 export default function Home() {
+  const { resetSearchParams } = useSearch();
+  const location = useLocation();
+
+  React.useEffect(() => {
+    resetSearchParams();
+  }, [location]);
+
   return (
     <Box
       id='hero'

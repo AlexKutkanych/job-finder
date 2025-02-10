@@ -9,8 +9,14 @@ import SearchResults from '../../components/SearchResults';
 import { useSearch } from '../../context/SearchContext';
 
 export default function Search() {
-  const { jobs } = useSearch();
+  const { jobs, searchParams, searchJobs } = useSearch();
+
+  React.useEffect(() => {
+    searchJobs(searchParams);
+  }, []);
+
   const jobsLen = jobs.length;
+
   return (
     <Stack spacing={2}>
       <Typography variant='span'>Found {jobsLen} job(s)</Typography>
