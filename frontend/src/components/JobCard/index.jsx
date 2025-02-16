@@ -8,7 +8,7 @@ import { Link } from '@mui/material';
 import JobLabels from '../JobLabels';
 
 export default function JobCard({
-  id,
+  _id,
   title,
   location,
   type,
@@ -21,7 +21,7 @@ export default function JobCard({
     <Card>
       <CardContent sx={{ textAlign: 'left' }}>
         <Link
-          href={`/job/${id}`}
+          href={`/job/${_id}`}
           variant='body1'
           sx={{ textDecoration: 'none', fontWeight: 'bold' }}
         >
@@ -43,7 +43,7 @@ export default function JobCard({
         <JobLabels labels={[salary, type, visa?.label, experienceLevel]} />
       </CardContent>
       <CardActions sx={{ px: 2, paddingTop: 0 }}>
-        <Button href={`/job/${id}`} label='Learn More' size='small' />
+        <Button href={`/job/${_id}`} label='Learn More' size='small' />
         <Button size='small' label='Save' color='secondary' />
       </CardActions>
     </Card>

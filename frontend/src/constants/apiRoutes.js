@@ -10,7 +10,7 @@ const AUTH_API_ROUTES = {
 
 const JOBS_API_ROUTES = {
   SEARCH: `${JOBS_BASE_URL}/search`,
-  SEARCH_BY_ID: `${JOBS_BASE_URL}/job/:id`,
+  SEARCH_BY_ID: `${JOBS_BASE_URL}/:id`,
 };
 
 export { AUTH_API_ROUTES, JOBS_API_ROUTES };
