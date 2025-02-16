@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import InputLabel from '@mui/material/InputLabel';
 import Stack from '@mui/material/Stack';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
@@ -49,46 +50,58 @@ export default function CountryCitySearch({
   };
 
   return (
-    <Stack
-      direction={{ xs: 'column', sm: 'row' }}
-      spacing={1}
-      useFlexGap
-      sx={{ width: { xs: '100%' } }}
-    >
-      <Select
-        id='job-country'
-        value={search?.jobCountry || 'all'}
-        name='jobCountry'
-        onChange={onChange}
+    <Stack sx={{ textAlign: 'left' }}>
+      {showCitySelect ? (
+        <InputLabel variant='standard' id='job-country'>
+          Select location
+        </InputLabel>
+      ) : null}
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        spacing={1}
+        useFlexGap
         sx={{
-          minWidth: '150px',
-          height: '40px',
-          width: '100%',
-          textAlign: 'left',
+          width: { xs: '100%' },
+          flexDirection: { xs: 'column', md: 'row' },
         }}
       >
-        {countries?.map(({ id, label }) => (
-          <MenuItem key={id} value={id}>
-            {label}
-          </MenuItem>
-        ))}
-      </Select>
-      {showCitySelect ? (
         <Select
-          id='job-city'
-          value={search?.jobCity || 'all'}
-          name='jobCity'
+          id='job-country'
+          labelId='job-country'
+          value={search?.jobCountry || 'all'}
+          name='jobCountry'
           onChange={onChange}
-          disabled={disableCities}
-          sx={{ minWidth: '150px', height: '40px', textAlign: 'left' }}
+          sx={{
+            minWidth: showCitySelect ? 'auto' : 200,
+            flexBasis: '50%',
+            height: '40px',
+            width: '100%',
+            textAlign: 'left',
+          }}
         >
-          {cities?.map(({ id, label }) => (
+          {countries?.map(({ id, label }) => (
             <MenuItem key={id} value={id}>
               {label}
             </MenuItem>
           ))}
         </Select>
-      ) : null}
+        {showCitySelect ? (
+          <Select
+            id='job-city'
+            value={search?.jobCity || 'all'}
+            name='jobCity'
+            onChange={onChange}
+            disabled={disableCities}
+            sx={{ flexBasis: '50%', height: '40px', textAlign: 'left' }}
+          >
+            {cities?.map(({ id, label }) => (
+              <MenuItem key={id} value={id}>
+                {label}
+              </MenuItem>
+            ))}
+          </Select>
+        ) : null}
+      </Stack>
     </Stack>
   );
 }

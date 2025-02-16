@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useMutation } from '@tanstack/react-query';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid2';
@@ -7,19 +8,23 @@ import { Stack, Typography } from '@mui/material';
 import SearchPanel from '../../components/SearchPanel';
 import SearchResults from '../../components/SearchResults';
 import { useSearch } from '../../context/SearchContext';
-import { useMutation } from '@tanstack/react-query';
 import { searchJobs } from '../../utils/jobs';
 import Loader from '../../components/Loader';
 
 export default function Search() {
-  const { jobs, searchParams } = useSearch();
+  const { searchParams, setSearchParams } = useSearch();
 
   const searchJobsMutation = useMutation({
     mutationFn: searchJobs,
   });
 
+  const onSubmit = (params) => {
+    searchJobsMutation.mutate(params);
+    setSearchParams(params);
+  };
+
   React.useEffect(() => {
-    searchJobsMutation.mutate(searchParams);
+    onSubmit(searchParams);
   }, []);
 
   console.log(searchJobsMutation, 'searchJobsMutation');
@@ -32,13 +37,16 @@ export default function Search() {
       <Typography variant='span'>Found {jobsLen} job(s)</Typography>
       <Grid container spacing={2}>
         <Grid size={5}>
-          <SearchPanel />
+          <SearchPanel
+            onSubmit={onSubmit}
+            isLoading={searchJobsMutation?.isPending}
+          />
         </Grid>
         <Grid size={7}>
           {searchJobsMutation.isPending ? <Loader /> : null}
           {searchJobsMutation.isSuccess ? (
             jobsLen ? (
-              <SearchResults jobs={jobs} />
+              <SearchResults jobs={searchJobsMutation?.data} />
             ) : (
               <Box
                 sx={{

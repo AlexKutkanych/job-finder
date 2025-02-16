@@ -10,7 +10,6 @@ import JobLabels from '../JobLabels';
 export default function JobCard({
   id,
   title,
-  company,
   location,
   type,
   description,

@@ -1,9 +1,9 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
-import Link from '@mui/material/Link';
 import navItems from '../../mock/navItems';
 import Socials from '../Socials';
 import Copyright from '../Copyright';

@@ -33,13 +33,12 @@ const visaSchema = new Schema({
 });
 
 const jobSchema = new Schema({
-  id: { type: Number, required: true, unique: true },
   title: { type: String, required: true },
   company: { type: companySchema, required: true },
   location: { type: jobLocationSchema, required: true },
   type: { type: String, required: true },
   salary: { type: String, required: true },
-  types: { type: [String], required: true },
+  keyWords: { type: [String], required: true },
   visa: { type: visaSchema, required: true },
   experienceLevel: { type: String, required: true },
   yearsOfExperience: { type: Number, required: true },
@@ -48,6 +47,7 @@ const jobSchema = new Schema({
   responsibilities: { type: [String], required: true },
   postedDate: { type: Date, required: true },
   applicationDeadline: { type: Date, required: true },
+  jobField: { type: String, required: true }
 });
 
 const Job = model('Job', jobSchema);

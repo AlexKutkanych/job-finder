@@ -1,5 +1,10 @@
 const visaOptions = [
   {
+    id: 'all',
+    label: 'All',
+    value: 'all',
+  },
+  {
     id: 'required',
     label: 'Visa required',
     value: 'required',

@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 export default function ActionButton({
   label,
   variant = 'contained',
+  disabled = false,
   onClick,
 }) {
   return (
@@ -13,6 +14,7 @@ export default function ActionButton({
       size='small'
       sx={{ minWidth: '90px' }}
       onClick={onClick}
+      disabled={disabled}
     >
       {label}
     </Button>

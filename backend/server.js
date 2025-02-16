@@ -1,7 +1,7 @@
 const express = require('express');
 // Import and require express-session
 const session = require('express-session');
-const routes = require('./controllers');
+const routes = require('./routes');
 var cors = require('cors');
 const { connectToDB } = require('./db');
 
@@ -20,7 +20,7 @@ app.use(cors());
 app.use(session(sess));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(routes);
+app.use('/api/v1', routes);
 
 app.listen(PORT, () => {
   console.log(`API server running on port ${PORT}!`);

@@ -8,14 +8,13 @@ const allJobs = [
       employees: '50-100',
     },
     location: {
-      full: 'Munich, Germany',
       country: 'Germany',
       city: 'Munich',
       code: 'DE',
     },
     type: 'Full-time',
     salary: '€80,000 - €100,000 per year',
-    types: ['software-development', 'frontend'],
+    keyWords: ['software-development', 'frontend'],
     visa: {
       id: 'sponsorship',
       label: 'Sponsorship',
@@ -51,14 +50,13 @@ const allJobs = [
       employees: '100-500',
     },
     location: {
-      full: 'Berlin, Germany',
       country: 'Germany',
       city: 'Berlin',
       code: 'DE',
     },
     type: 'Full-time',
     salary: '€70,000 - €90,000 per year',
-    types: ['software-development', 'backend'],
+    keyWords: ['software-development', 'backend'],
     visa: {
       id: 'required',
       label: 'Visa required',
@@ -95,14 +93,13 @@ const allJobs = [
       employees: '500-1000',
     },
     location: {
-      full: 'Warsaw, Poland',
       country: 'Poland',
       city: 'Warsaw',
       code: 'PL',
     },
     type: 'Full-time',
     salary: '€40,000 - €50,000 per year',
-    types: ['software-development', 'data-science'],
+    keyWords: ['software-development', 'data-science'],
     visa: {
       id: 'required',
       label: 'Visa required',

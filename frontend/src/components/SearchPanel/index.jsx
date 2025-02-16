@@ -22,17 +22,18 @@ const Item = styled(Paper)(({ theme }) => ({
   }),
 }));
 
-export default function SearchPanel() {
+export default function SearchPanel({ onSubmit, isLoading }) {
   const {
     initialSearchParams,
     searchParams,
     setSearchParams,
     resetSearchParams,
-    searchJobs,
-    isLoading,
+    isReset,
+    setIsReset,
   } = useSearch();
 
   const handleChange = (event) => {
+    setIsReset(false);
     setSearchParams((state) => ({
       ...state,
       [event.target.name]: event.target.value,
@@ -40,6 +41,7 @@ export default function SearchPanel() {
   };
 
   const handleCountryChange = (values) => {
+    setIsReset(false);
     setSearchParams((state) => ({
       ...state,
       ...values,
@@ -48,13 +50,13 @@ export default function SearchPanel() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log(searchParams, 'searching...');
-    searchJobs(searchParams);
+    console.log(onSubmit, 'searching...');
+    onSubmit(searchParams);
   };
 
   const handleClear = () => {
     resetSearchParams();
-    searchJobs(initialSearchParams);
+    onSubmit(initialSearchParams);
   };
 
   return (
@@ -91,7 +93,12 @@ export default function SearchPanel() {
             value={searchParams?.jobField || 'all'}
           />
           <SearchButton label='Search' isLoading={isLoading} />
-          <ActionButton label='Clear' variant='outline' onClick={handleClear} />
+          <ActionButton
+            label='Clear'
+            variant='outline'
+            onClick={handleClear}
+            disabled={isReset}
+          />
         </Stack>
       </form>
     </Item>
