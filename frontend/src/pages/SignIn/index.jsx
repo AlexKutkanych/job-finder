@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
@@ -11,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
+import { loginUser } from '../../utils/auth';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -60,16 +62,29 @@ export default function SignIn(props) {
   const [passwordError, setPasswordError] = useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
 
+  const mutation = useMutation({
+    mutationFn: loginUser,
+    onSuccess: (data) => {
+      // if (data?.status === 'ok') {
+      //   // Redirect to login
+      //   navigate('/');
+      // }
+    },
+  });
+
   const handleSubmit = (event) => {
     if (emailError || passwordError) {
       event.preventDefault();
       return;
     }
     const data = new FormData(event.currentTarget);
-    console.log({
+
+    const res = mutation.mutate({
       email: data.get('email'),
       password: data.get('password'),
     });
+
+    console.log(res, 'res');
   };
 
   const validateInputs = () => {

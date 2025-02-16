@@ -2,7 +2,8 @@ const express = require('express');
 // Import and require express-session
 const session = require('express-session');
 const routes = require('./routes');
-var cors = require('cors');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const { connectToDB } = require('./db');
 
 const PORT = process.env.PORT || 3001;
@@ -16,9 +17,10 @@ const sess = {
 };
 
 // Express middlewares
-app.use(cors());
+app.use(cors({ credentials: true, origin: process.env.FRONT_END_URL }));
 app.use(session(sess));
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use('/api/v1', routes);
 

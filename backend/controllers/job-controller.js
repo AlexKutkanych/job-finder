@@ -5,6 +5,7 @@ module.exports = {
   async searchJobs(req, res) {
     try {
       const params = getSearchJobsParams(req.body);
+      console.log(req.cookies, '<<<<<<')
 
       const jobs = await Job.find(params);
 
