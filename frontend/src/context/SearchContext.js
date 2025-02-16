@@ -19,26 +19,6 @@ const SearchProvider = ({ children }) => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  // TODO: add jobs fetching from API
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch('YOUR_API_ENDPOINT');
-  //       if (!response.ok) {
-  //         throw new Error(`HTTP error! status: ${response.status}`);
-  //       }
-  //       const result = await response.json();
-  //       setData(result);
-  //     } catch (e) {
-  //       setError(e);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
   const searchJobs = (newSearch) => {
     setSearchParams((state) => ({ ...state, ...newSearch }));
     const filterJobs = allJobs.filter(

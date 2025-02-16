@@ -4,12 +4,11 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid2';
 import { styled } from '@mui/material/styles';
 import { Stack, Typography } from '@mui/material';
-import SearchPanel from '../../components/SearchPanel';
-import SearchResults from '../../components/SearchResults';
+import SearchPanel from '../SearchPanel';
+import SearchResults from '../SearchResults';
 import { useSearch } from '../../context/SearchContext';
 import { useMutation } from '@tanstack/react-query';
 import { searchJobs } from '../../utils/jobs';
-import Loader from '../../components/Loader';
 
 export default function Search() {
   const { jobs, searchParams } = useSearch();
@@ -35,26 +34,23 @@ export default function Search() {
           <SearchPanel />
         </Grid>
         <Grid size={7}>
-          {searchJobsMutation.isPending ? <Loader /> : null}
-          {searchJobsMutation.isSuccess ? (
-            jobsLen ? (
-              <SearchResults jobs={jobs} />
-            ) : (
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  height: '100%',
-                }}
-              >
-                <Typography component='p' sx={{ textAlign: 'center' }}>
-                  No jobs found
-                </Typography>
-              </Box>
-            )
-          ) : null}
-          {searchJobsMutation.isError ? 'Error' : null}
+          {searchJobsMutation.isPending && 'Loading...'}
+          {jobsLen ? (
+            <SearchResults jobs={jobs} />
+          ) : (
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100%',
+              }}
+            >
+              <Typography component='p' sx={{ textAlign: 'center' }}>
+                No jobs found
+              </Typography>
+            </Box>
+          )}
         </Grid>
       </Grid>
     </Stack>

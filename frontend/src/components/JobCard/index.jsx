@@ -29,7 +29,7 @@ export default function JobCard({
           {title}
         </Link>
         <Typography gutterBottom component='p'>
-          {company?.name}
+          {location?.city}, {location?.country}
         </Typography>
         <Typography
           variant='body2'

@@ -3,6 +3,7 @@ const express = require('express');
 const session = require('express-session');
 const routes = require('./controllers');
 var cors = require('cors');
+const { connectToDB } = require('./db');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -21,4 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(routes);
 
-app.listen(PORT, () => console.log('Now listening', PORT));
+app.listen(PORT, () => {
+  console.log(`API server running on port ${PORT}!`);
+  connectToDB();
+});
