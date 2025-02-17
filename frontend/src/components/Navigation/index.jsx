@@ -134,12 +134,24 @@ export default function Navigation() {
                 ))}
                 <Divider sx={{ my: 3 }} />
                 <MenuItem>
-                  <Button color='primary' variant='contained' fullWidth>
+                  <Button
+                    to='/sign-up'
+                    component={Link}
+                    color='primary'
+                    variant='contained'
+                    fullWidth
+                  >
                     Sign up
                   </Button>
                 </MenuItem>
                 <MenuItem>
-                  <Button color='primary' variant='outlined' fullWidth>
+                  <Button
+                    to='/sign-in'
+                    component={Link}
+                    color='primary'
+                    variant='outlined'
+                    fullWidth
+                  >
                     Sign in
                   </Button>
                 </MenuItem>

@@ -15,45 +15,42 @@ import { useQuery } from '@tanstack/react-query';
 import { searchJobById } from '../../utils/jobs';
 import Loader from '../../components/Loader';
 import { formatDate } from '../../utils/date';
+import { getUserProfile } from '../../utils/user';
 
 const ListItem = styled(CoreListItem)({
   fontSize: '.875rem',
   paddingTop: 0,
 });
 
-export default function JobPage() {
+export default function ProfilePage() {
   let params = useParams();
 
-  const searchJobByIdQuery = useQuery({
-    queryKey: ['selectedJob'],
-    queryFn: () => searchJobById(params?.id),
+  const getProfileQuery = useQuery({
+    queryKey: ['getProfile'],
+    queryFn: getUserProfile,
   });
 
-  const {
-    data: currentJob,
-    isPending,
-    isSuccess,
-    isError,
-  } = searchJobByIdQuery;
+  const { data: profile, isPending, isSuccess, isError } = getProfileQuery;
 
-  console.log(isError);
+  console.log(getProfileQuery);
 
-  const {
-    title,
-    location,
-    postedDate,
-    salary,
-    type,
-    visa,
-    experienceLevel,
-    description,
-    requirements,
-    responsibilities,
-    company,
-  } = currentJob || {};
+  // const {
+  //   title,
+  //   location,
+  //   postedDate,
+  //   salary,
+  //   type,
+  //   visa,
+  //   experienceLevel,
+  //   description,
+  //   requirements,
+  //   responsibilities,
+  //   company,
+  // } = currentJob || {};
 
   return (
     <Stack spacing={2}>
+      ProfilePage
       {isPending ? <Loader /> : null}
       {isError ? (
         <Typography>
@@ -62,7 +59,8 @@ export default function JobPage() {
       ) : null}
       {isSuccess ? (
         <>
-          <Card>
+          Success
+          {/* <Card>
             <CardContent>
               <Typography gutterBottom variant='h5' component='div'>
                 {title}
@@ -133,7 +131,7 @@ export default function JobPage() {
                 </Stack>
               </Box>
             </CardContent>
-          </Card>
+          </Card> */}
         </>
       ) : null}
     </Stack>

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router';
 
+import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,6 +14,7 @@ import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import { createUser } from '../../utils/auth';
+import { useAuthErrorHandler } from '../../hooks/useAuthErrorHandler';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -64,6 +66,8 @@ export default function SignUp() {
   const [nameError, setNameError] = useState(false);
   const [nameErrorMessage, setNameErrorMessage] = useState('');
 
+  const { errorMessage, authErrorHandler } = useAuthErrorHandler();
+
   const navigate = useNavigate();
 
   const mutation = useMutation({
@@ -74,6 +78,7 @@ export default function SignUp() {
         navigate('/');
       }
     },
+    onError: authErrorHandler,
   });
 
   console.log(mutation, 'mutation');
@@ -142,6 +147,7 @@ export default function SignUp() {
           >
             Sign up
           </Typography>
+          {errorMessage ? <Alert severity='error'>{errorMessage}</Alert> : null}
           <Box
             component='form'
             onSubmit={handleSubmit}

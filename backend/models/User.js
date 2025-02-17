@@ -34,6 +34,21 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+userSchema.statics.login = async function(email, password) {
+  const user = await this.findOne({ email })
+
+  if (!user) {
+    throw Error('incorrect email')
+  }
+
+  const auth = await bcrypt.compare(password, user.password)
+
+  if (auth) {
+    return user;
+  }
+  throw Error('incorrect password')
+}
+
 // userSchema.pre('save', async function (next) {
 //   if (this.isNew || this.isModified('password')) {
 //     const saltRounds = 10;

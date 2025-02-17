@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
-  useQuery,
-  useMutation,
-  useQueryClient,
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
@@ -18,10 +15,11 @@ import { SearchProvider } from './context/SearchContext';
 import JobPage from './pages/JobPage';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import ProfilePage from './pages/Profile';
 
 export default function App() {
   const queryClient = new QueryClient();
-  console.log(process.env.REACT_APP_API_PATH, 'process.env.REACT_APP_API_PATH');
+
   return (
     <QueryClientProvider client={queryClient}>
       <SearchProvider>
@@ -37,6 +35,7 @@ export default function App() {
               <Route path='/search' element={<Search />} />
               <Route path='/job/:id' element={<JobPage />} />
               <Route path='/about' element={<About />} />
+              <Route path='/profile' element={<ProfilePage />} />
               <Route path='/sign-in' element={<SignIn />} />
               <Route path='/sign-up' element={<SignUp />} />
               <Route path='*' element={<NotFound />} />

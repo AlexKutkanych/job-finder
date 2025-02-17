@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
+import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
@@ -13,6 +14,8 @@ import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import { loginUser } from '../../utils/auth';
+import { useAuthErrorHandler } from '../../hooks/useAuthErrorHandler';
+import { useNavigate } from 'react-router-dom';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -62,29 +65,33 @@ export default function SignIn(props) {
   const [passwordError, setPasswordError] = useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
 
+  const navigate = useNavigate()
+
+  const { errorMessage, authErrorHandler } = useAuthErrorHandler();
+
   const mutation = useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
-      // if (data?.status === 'ok') {
-      //   // Redirect to login
-      //   navigate('/');
-      // }
+      console.log(data, 'data')
+      if (data?.status === 'ok') {
+        // Redirect to login
+        navigate('/');
+      }
     },
+    onError: authErrorHandler,
   });
 
   const handleSubmit = (event) => {
+    event.preventDefault();
     if (emailError || passwordError) {
-      event.preventDefault();
       return;
     }
     const data = new FormData(event.currentTarget);
 
-    const res = mutation.mutate({
+    mutation.mutate({
       email: data.get('email'),
       password: data.get('password'),
     });
-
-    console.log(res, 'res');
   };
 
   const validateInputs = () => {
@@ -127,6 +134,7 @@ export default function SignIn(props) {
           >
             Sign in
           </Typography>
+          {errorMessage ? <Alert severity='error'>{errorMessage}</Alert> : null}
           <Box
             component='form'
             onSubmit={handleSubmit}
