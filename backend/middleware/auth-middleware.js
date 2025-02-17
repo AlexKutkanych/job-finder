@@ -14,10 +14,9 @@ const requireAuth = (req, res, next) => {
     }
 
     console.log(decodedToken, 'token');
+    req.userId = decodedToken?.id;
     next();
   });
-
-  next();
 };
 
 module.exports = { requireAuth };

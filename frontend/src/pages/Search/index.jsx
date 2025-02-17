@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { useMutation } from '@tanstack/react-query';
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid2';
-import { styled } from '@mui/material/styles';
 import { Stack, Typography } from '@mui/material';
 import SearchPanel from '../../components/SearchPanel';
 import SearchResults from '../../components/SearchResults';
@@ -27,8 +25,6 @@ export default function Search() {
     onSubmit(searchParams);
   }, []);
 
-  console.log(searchJobsMutation, 'searchJobsMutation');
-
   const jobsLen =
     searchJobsMutation?.isSuccess && searchJobsMutation?.data?.length;
 
@@ -36,13 +32,13 @@ export default function Search() {
     <Stack spacing={2}>
       <Typography variant='span'>Found {jobsLen} job(s)</Typography>
       <Grid container spacing={2}>
-        <Grid size={5}>
+        <Grid size={{ xs: 12, md: 5 }}>
           <SearchPanel
             onSubmit={onSubmit}
             isLoading={searchJobsMutation?.isPending}
           />
         </Grid>
-        <Grid size={7}>
+        <Grid size={{ xs: 12, md: 7 }}>
           {searchJobsMutation.isPending ? <Loader /> : null}
           {searchJobsMutation.isSuccess ? (
             jobsLen ? (

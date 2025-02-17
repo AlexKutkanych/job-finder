@@ -36,8 +36,6 @@ export default function JobPage() {
     isError,
   } = searchJobByIdQuery;
 
-  console.log(isError);
-
   const {
     title,
     location,

@@ -3,6 +3,7 @@ const {
   loginUser,
   signupUser,
   logoutUser,
+  checkToken,
 } = require('../../controllers/auth-controller');
 
 router.route('/login').post(loginUser);

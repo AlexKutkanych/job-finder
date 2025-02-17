@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Paper from '@mui/material/Paper';
 import { Stack } from '@mui/material';
 import JobCard from '../JobCard';

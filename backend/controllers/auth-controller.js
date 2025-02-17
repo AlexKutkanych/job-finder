@@ -19,7 +19,9 @@ module.exports = {
 
       const user = await User.login(email, password);
       if (!user) {
-        return res.status(400).json({ message: 'Wrong email and/or password!' });
+        return res
+          .status(400)
+          .json({ message: 'Wrong email and/or password!' });
       }
 
       const token = createToken(user._id);
@@ -28,7 +30,9 @@ module.exports = {
         maxAge: COOKIE_MAX_AGE * 1000,
       });
 
-      return res.status(200).json({ status: 'ok', message: 'User successfully logged in' })
+      return res
+        .status(200)
+        .json({ status: 'ok', message: 'User successfully logged in', user });
     } catch (err) {
       const errors = handleError(err);
       res.status(400).json({ errors });
@@ -53,7 +57,7 @@ module.exports = {
         to make cookies set in browser (due to different domains):
         - add localhost to cors whitelist
         - add withCredentials: true for axios
-      */ 
+      */
       res.cookie('jwt', token, {
         httpOnly: true,
         maxAge: COOKIE_MAX_AGE * 1000,
@@ -66,48 +70,14 @@ module.exports = {
       res.status(400).json({ errors });
     }
   },
-  async logoutUser() {},
+  async logoutUser(req, res) {
+    try {
+      res
+        .status(201)
+        .json({ status: 'ok', message: 'User successfully logged out!' });
+    } catch (err) {
+      const errors = handleError(err);
+      res.status(400).json({ errors });
+    }
+  },
 };
-
-
-// router.post("/login", (req, res) => {
-//   User.findOne({
-//     where: {
-//       email: req.body.email,
-//     },
-//   }).then((dbUserData) => {
-//     if (!dbUserData) {
-//       res.status(400).json({
-//         message: "No user with that email address!",
-//       });
-//       return;
-//     }
-//     const validPassword = dbUserData.checkPassword(req.body.password);
-
-//     if (!validPassword) {
-//       res.status(400).json({ message: "Incorrect password!" });
-//       return;
-//     }
-//     req.session.save(() => {
-//       req.session.user_id = dbUserData.id;
-//       req.session.email = dbUserData.email;
-//       req.session.loggedIn = true;
-//       console.log(req.session.loggedIn);
-
-//       res.json({ user: dbUserData, message: "You are now logged in!" });
-//     });
-//   });
-// });
-
-// router.post("/logout", (req, res) => {
-//   if (req.session.loggedIn) {
-//     req.session.destroy(() => {
-//       res.json({ message: "You are logout" });
-//       res.status(204).end();
-//     });
-//   } else {
-//     res.status(404).end();
-//   }
-// });
-
-// module.exports = router;

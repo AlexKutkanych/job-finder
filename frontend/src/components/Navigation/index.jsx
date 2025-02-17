@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { alpha, styled } from '@mui/material/styles';
+import { deepOrange, red } from '@mui/material/colors';
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,6 +14,9 @@ import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import navItems from '../../mock/navItems';
+import { useAuth } from '../../context/AuthContext';
+import UserPopover from '../UserPopover';
+import { useUserLogout } from '../../hooks/useUserLogout';
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: 'flex',
@@ -32,6 +36,11 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 
 export default function Navigation() {
   const [open, setOpen] = useState(false);
+  const { auth } = useAuth();
+  const { handleLogout } = useUserLogout();
+
+  const username = auth?.user?.username;
+  const isLoggedIn = auth?.hasToken && username;
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
@@ -50,7 +59,11 @@ export default function Navigation() {
       }}
     >
       <Container maxWidth='lg'>
-        <StyledToolbar variant='dense' disableGutters>
+        <StyledToolbar
+          variant='dense'
+          disableGutters
+          sx={{ flexDirection: { xs: 'row-reverse', md: 'row' } }}
+        >
           <Box
             sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}
           >
@@ -76,26 +89,37 @@ export default function Navigation() {
               alignItems: 'center',
             }}
           >
-            <Button
-              to='/sign-in'
-              component={Link}
-              color='primary'
-              variant='text'
-              size='small'
-            >
-              Sign in
-            </Button>
-            <Button
-              to='/sign-up'
-              component={Link}
-              color='primary'
-              variant='contained'
-              size='small'
-            >
-              Sign up
-            </Button>
+            {isLoggedIn ? (
+              <UserPopover username={username} />
+            ) : (
+              <>
+                <Button
+                  to='/sign-in'
+                  component={Link}
+                  color='primary'
+                  variant='text'
+                  size='small'
+                >
+                  Sign in
+                </Button>
+                <Button
+                  to='/sign-up'
+                  component={Link}
+                  color='primary'
+                  variant='contained'
+                  size='small'
+                >
+                  Sign up
+                </Button>
+              </>
+            )}
           </Box>
-          <Box sx={{ display: { xs: 'flex', md: 'none' }, gap: 1 }}>
+          <Box
+            sx={{
+              display: { xs: 'flex', md: 'none' },
+              gap: 1,
+            }}
+          >
             <IconButton aria-label='Menu button' onClick={toggleDrawer(true)}>
               <MenuIcon />
             </IconButton>
@@ -133,28 +157,61 @@ export default function Navigation() {
                   </MenuItem>
                 ))}
                 <Divider sx={{ my: 3 }} />
-                <MenuItem>
-                  <Button
-                    to='/sign-up'
-                    component={Link}
-                    color='primary'
-                    variant='contained'
-                    fullWidth
-                  >
-                    Sign up
-                  </Button>
-                </MenuItem>
-                <MenuItem>
-                  <Button
-                    to='/sign-in'
-                    component={Link}
-                    color='primary'
-                    variant='outlined'
-                    fullWidth
-                  >
-                    Sign in
-                  </Button>
-                </MenuItem>
+                {isLoggedIn ? (
+                  <>
+                    <MenuItem>
+                      <Button
+                        to='/profile'
+                        component={Link}
+                        color='primary'
+                        variant='text'
+                        size='small'
+                      >
+                        Profile
+                      </Button>
+                    </MenuItem>
+                    <MenuItem>
+                      <Button
+                        to='/profile'
+                        onClick={handleLogout}
+                        color='primary'
+                        variant='text'
+                        size='small'
+                        sx={{
+                          color: red['700'],
+                          fontWeight: 700,
+                        }}
+                      >
+                        Logout
+                      </Button>
+                    </MenuItem>
+                  </>
+                ) : (
+                  <>
+                    <MenuItem>
+                      <Button
+                        to='/sign-up'
+                        component={Link}
+                        color='primary'
+                        variant='contained'
+                        fullWidth
+                      >
+                        Sign up
+                      </Button>
+                    </MenuItem>
+                    <MenuItem>
+                      <Button
+                        to='/sign-in'
+                        component={Link}
+                        color='primary'
+                        variant='outlined'
+                        fullWidth
+                      >
+                        Sign in
+                      </Button>
+                    </MenuItem>
+                  </>
+                )}
               </Box>
             </Drawer>
           </Box>

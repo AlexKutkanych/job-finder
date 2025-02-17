@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { useNavigate } from 'react-router';
 
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
@@ -15,6 +14,8 @@ import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import { createUser } from '../../utils/auth';
 import { useAuthErrorHandler } from '../../hooks/useAuthErrorHandler';
+import { useAuth } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -66,22 +67,17 @@ export default function SignUp() {
   const [nameError, setNameError] = useState(false);
   const [nameErrorMessage, setNameErrorMessage] = useState('');
 
+  const navigate = useNavigate()
+
   const { errorMessage, authErrorHandler } = useAuthErrorHandler();
 
-  const navigate = useNavigate();
+  const { handleSuccessLogin } = useAuth();
 
   const mutation = useMutation({
     mutationFn: createUser,
-    onSuccess: (data) => {
-      if (data?.status === 'ok') {
-        // Redirect to login
-        navigate('/');
-      }
-    },
+    onSuccess: handleSuccessLogin(navigate),
     onError: authErrorHandler,
   });
-
-  console.log(mutation, 'mutation');
 
   const validateInputs = () => {
     const email = document.getElementById('email');

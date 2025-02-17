@@ -16,6 +16,7 @@ import { styled } from '@mui/material/styles';
 import { loginUser } from '../../utils/auth';
 import { useAuthErrorHandler } from '../../hooks/useAuthErrorHandler';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -65,19 +66,14 @@ export default function SignIn(props) {
   const [passwordError, setPasswordError] = useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const { handleSuccessLogin } = useAuth();
 
   const { errorMessage, authErrorHandler } = useAuthErrorHandler();
 
   const mutation = useMutation({
     mutationFn: loginUser,
-    onSuccess: (data) => {
-      console.log(data, 'data')
-      if (data?.status === 'ok') {
-        // Redirect to login
-        navigate('/');
-      }
-    },
+    onSuccess: handleSuccessLogin(navigate),
     onError: authErrorHandler,
   });
 

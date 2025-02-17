@@ -15,6 +15,7 @@ const JOBS_API_ROUTES = {
 };
 
 const USER_API_ROUTES = {
+  GET_USER_TOKEN: `${USER_BASE_URL}/token`,
   GET_USER_PROFILE: `${USER_BASE_URL}/profile`,
 };
 
