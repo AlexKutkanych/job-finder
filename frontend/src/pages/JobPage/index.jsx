@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -11,10 +11,12 @@ import ActionButton from '../../components/ActionButton';
 import List from '@mui/material/List';
 import CoreListItem from '@mui/material/ListItem';
 import { Box, styled } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
-import { searchJobById } from '../../utils/jobs';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { applyForJob, bookmarkJob, searchJobById } from '../../utils/jobs';
 import Loader from '../../components/Loader';
 import { formatDate } from '../../utils/date';
+import { useAuth } from '../../context/AuthContext';
+import Snackbar from '../../components/Snackbar';
 
 const ListItem = styled(CoreListItem)({
   fontSize: '.875rem',
@@ -22,12 +24,77 @@ const ListItem = styled(CoreListItem)({
 });
 
 export default function JobPage() {
+  const [open, setOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+
   let params = useParams();
+  const { auth, setUser } = useAuth();
 
   const searchJobByIdQuery = useQuery({
     queryKey: ['selectedJob'],
     queryFn: () => searchJobById(params?.id),
   });
+
+  const bookmarkJobQuery = useMutation({
+    mutationFn: bookmarkJob,
+  });
+
+  const applyForJobQuery = useMutation({
+    mutationFn: applyForJob,
+  });
+
+  const getSaveJobMessage = (savedJobs = []) => {
+    return savedJobs?.includes(params?.id)
+      ? 'Job saved to bookmarks!'
+      : 'Job removed from bookmarks!';
+  };
+
+  useEffect(() => {
+    if (bookmarkJobQuery?.isSuccess) {
+      const message = getSaveJobMessage(
+        bookmarkJobQuery?.data?.user?.savedJobs
+      );
+      setSnackbarMessage(message);
+      setOpen(true);
+      setUser(bookmarkJobQuery?.data?.user);
+      localStorage.setItem(
+        'user',
+        JSON.stringify(bookmarkJobQuery?.data?.user)
+      );
+    }
+  }, [bookmarkJobQuery?.isSuccess]);
+
+  useEffect(() => {
+    if (applyForJobQuery?.isSuccess) {
+      setSnackbarMessage('Successfully applied for job!');
+      setOpen(true);
+      setUser(applyForJobQuery?.data?.user);
+      localStorage.setItem(
+        'user',
+        JSON.stringify(applyForJobQuery?.data?.user)
+      );
+    }
+  }, [applyForJobQuery?.isSuccess]);
+
+  const isJobApplied = useMemo(() => {
+    const user = auth?.user || bookmarkJobQuery?.data?.user;
+    return user?.jobsApplied?.includes(params?.id);
+  }, [auth?.user, bookmarkJobQuery?.data?.user, params?.id]);
+
+  const isJobSaved = useMemo(() => {
+    const user = auth?.user || bookmarkJobQuery?.data?.user;
+    return user?.savedJobs?.includes(params?.id);
+  }, [auth?.user, bookmarkJobQuery?.data?.user, params?.id]);
+
+  console.log(auth, 'auth');
+
+  const handleApplyForJob = () => {
+    applyForJobQuery.mutate({ userId: auth?.user?._id, jobId: params?.id });
+  };
+
+  const handleBookmark = () => {
+    bookmarkJobQuery.mutate({ userId: auth?.user?._id, jobId: params?.id });
+  };
 
   const {
     data: currentJob,
@@ -48,6 +115,7 @@ export default function JobPage() {
     requirements,
     responsibilities,
     company,
+    applicants
   } = currentJob || {};
 
   return (
@@ -72,13 +140,27 @@ export default function JobPage() {
               <Typography variant='body2' sx={{ color: 'text.secondary' }}>
                 Posted: {formatDate(postedDate)}
               </Typography>
+              <Typography variant='body2' sx={{ color: 'text.secondary' }}>
+                Applications: {applicants?.length || 0}
+              </Typography>
               <JobLabels
                 labels={[salary, type, visa?.label, experienceLevel]}
               />
             </CardContent>
             <CardActions sx={{ p: 2 }}>
-              <ActionButton label='Apply' size='small' variant='contained' />
-              <ActionButton label='Save' size='small' variant='outlined' />
+              <ActionButton
+                onClick={handleApplyForJob}
+                label={isJobApplied ? 'Applied' : 'Apply'}
+                size='small'
+                variant='contained'
+                disabled={isJobApplied}
+              />
+              <ActionButton
+                onClick={handleBookmark}
+                label={isJobSaved ? 'Saved' : 'Save'}
+                size='small'
+                variant='outlined'
+              />
             </CardActions>
           </Card>
           <Card>
@@ -132,6 +214,7 @@ export default function JobPage() {
               </Box>
             </CardContent>
           </Card>
+          <Snackbar open={open} setOpen={setOpen} message={snackbarMessage} />
         </>
       ) : null}
     </Stack>

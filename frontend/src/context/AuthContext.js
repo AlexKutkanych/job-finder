@@ -46,14 +46,18 @@ const AuthProvider = ({ children }) => {
 
   const handleSuccessLogin = (navigate) => (data) => {
     if (data?.status === 'ok') {
-      setUser(data?.user);
+      setAuth((state) => ({
+        ...state,
+        user: data?.user,
+        hasToken: data?.hasToken,
+      }));
       localStorage.setItem('user', JSON.stringify(data?.user));
-      navigate('/');
+      navigate('/profile');
     }
   };
 
-  const resetAuth = () => setAuth(initialUser)
-  
+  const resetAuth = () => setAuth(initialUser);
+
   return (
     <AuthContext.Provider
       value={{

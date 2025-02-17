@@ -7,7 +7,7 @@ import { deepOrange, red } from '@mui/material/colors';
 import { Stack } from '@mui/material';
 import { useUserLogout } from '../../hooks/useUserLogout';
 
-export default function UserPopover({ username }) {
+export default function UserPopover({ username, avatar }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const { handleLogout } = useUserLogout();
@@ -30,9 +30,8 @@ export default function UserPopover({ username }) {
         onClick={handleClick}
         sx={{ p: 0, minWidth: 40 }}
       >
-        <Avatar sx={{ bgcolor: deepOrange[500] }}>
-          {username.slice(0, 1).toUpperCase()}
-        </Avatar>
+        <Avatar alt={username}
+            src={avatar} sx={{ bgcolor: deepOrange[500] }} />
       </Button>
       <Popover
         id={id}

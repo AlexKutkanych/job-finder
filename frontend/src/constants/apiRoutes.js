@@ -12,6 +12,8 @@ const AUTH_API_ROUTES = {
 const JOBS_API_ROUTES = {
   SEARCH: `${JOBS_BASE_URL}/search`,
   SEARCH_BY_ID: `${JOBS_BASE_URL}/:id`,
+  BOOKMARK_JOB: `${JOBS_BASE_URL}/bookmark`,
+  APPLY_FOR_JOB: `${JOBS_BASE_URL}/apply`,
 };
 
 const USER_API_ROUTES = {

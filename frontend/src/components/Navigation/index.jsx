@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { alpha, styled } from '@mui/material/styles';
-import { deepOrange, red } from '@mui/material/colors';
+import { red } from '@mui/material/colors';
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -90,7 +90,7 @@ export default function Navigation() {
             }}
           >
             {isLoggedIn ? (
-              <UserPopover username={username} />
+              <UserPopover username={username} avatar={auth?.user?.avatar} />
             ) : (
               <>
                 <Button

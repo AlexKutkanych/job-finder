@@ -1,6 +1,4 @@
 const User = require('../models/User');
-var jwt = require('jsonwebtoken');
-const { COOKIE_MAX_AGE } = require('../utils/constants');
 const { handleError } = require('../utils/authErrorHandler');
 
 module.exports = {

@@ -47,7 +47,8 @@ const jobSchema = new Schema({
   responsibilities: { type: [String], required: true },
   postedDate: { type: Date, required: true },
   applicationDeadline: { type: Date, required: true },
-  jobField: { type: String, required: true }
+  jobField: { type: String, required: true },
+  applicants: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 });
 
 const Job = model('Job', jobSchema);

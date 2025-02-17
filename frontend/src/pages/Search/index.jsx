@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid2';
@@ -21,7 +21,7 @@ export default function Search() {
     setSearchParams(params);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     onSubmit(searchParams);
   }, []);
 

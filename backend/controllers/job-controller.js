@@ -1,15 +1,14 @@
 const Job = require('../models/Job');
+const User = require('../models/User');
 const { getSearchJobsParams } = require('../utils/searchJobs');
 
 module.exports = {
   async searchJobs(req, res) {
     try {
       const params = getSearchJobsParams(req.body);
-      console.log(req.cookies, '<<<<<<')
-
       const jobs = await Job.find(params);
 
-      res.json(jobs);
+      res.status(200).json(jobs);
     } catch (err) {
       res.status(400).json({ message: 'Error occurred' });
     }
@@ -37,9 +36,64 @@ module.exports = {
     try {
       const jobs = await Job.create(req.body);
 
-      res.json(jobs);
+      res.status(201).json(jobs);
     } catch (err) {
-      res.status(400).send(err, 'Error occurred');
+      res.status(400).json(err, 'Error occurred');
+    }
+  },
+
+  async applyForJob(req, res) {
+    try {
+      const userId = req?.body?.userId;
+      const jobId = req?.body?.jobId;
+
+      const job = await Job.findById(jobId);
+      const user = await User.findById(userId);
+
+      if (!user || !job) {
+        return res.status(404).json({ error: 'User or Job not found' });
+      }
+
+      user.jobsApplied.push(jobId);
+      job.applicants.push(userId);
+
+      await user.save();
+      await job.save();
+
+      res
+        .status(200)
+        .json({ status: 'ok', message: 'Job application successful', user });
+    } catch (err) {
+      const errors = handleError(err);
+      return res.status(400).json({ errors });
+    }
+  },
+
+  async bookmarkJob(req, res) {
+    try {
+      const jobId = req?.body?.jobId;
+      const userId = req?.body?.userId;
+
+      const user = await User.findById(userId);
+
+      if (!user) {
+        return res.status(400).json({ message: 'User not found!' });
+      }
+
+      if (user.savedJobs.includes(jobId)) {
+        user.savedJobs = user.savedJobs.filter((id) => id.toString() !== jobId);
+      } else {
+        user.savedJobs.push(jobId);
+      }
+
+      await user.save();
+
+      return res
+        .status(200)
+        .json({ status: 'ok', message: 'Job bookmarked', user });
+    } catch (err) {
+      const errors = handleError(err);
+      return res.status(400).json({ errors });
     }
   },
 };

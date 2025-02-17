@@ -18,6 +18,23 @@ const userSchema = new Schema({
     required: [true, 'Please enter a password'],
     minlength: [6, 'Min password length is 6'],
   },
+  location: {
+    type: String
+  },
+  avatar: {
+    type: String
+  },
+  jobPosition: {
+    type: String
+  },
+  university: {
+    type: String
+  },
+  languages: {
+    type: [String]
+  },
+  savedJobs: [{ type: Schema.Types.ObjectId, ref: 'Job' }],
+  jobsApplied: [{ type: Schema.Types.ObjectId, ref: 'Job' }]
 });
 
 // fire after document saved to DB

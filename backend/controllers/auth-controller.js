@@ -7,6 +7,18 @@ const { handleError } = require('../utils/authErrorHandler');
 const createToken = (id) =>
   jwt.sign({ id }, 'super secret string', { expiresIn: COOKIE_MAX_AGE });
 
+const generateMockUserParams = () => {
+  const randomImg = Math.round(Math.random(0, 5)) * 10;
+
+  return {
+    location: 'San Francisco, CA',
+    avatar: `https://i.pravatar.cc/150?img=${randomImg}`,
+    jobPosition: 'Software Engineer',
+    university: 'Massachusetts Institute of Technology',
+    languages: ['English', 'Ukrainian'],
+  };
+};
+
 module.exports = {
   async loginUser(req, res) {
     try {
@@ -18,6 +30,7 @@ module.exports = {
       }
 
       const user = await User.login(email, password);
+      console.log(user, 'user');
       if (!user) {
         return res
           .status(400)
@@ -30,9 +43,12 @@ module.exports = {
         maxAge: COOKIE_MAX_AGE * 1000,
       });
 
-      return res
-        .status(200)
-        .json({ status: 'ok', message: 'User successfully logged in', user });
+      return res.status(200).json({
+        status: 'ok',
+        message: 'User successfully logged in',
+        user,
+        hasToken: true,
+      });
     } catch (err) {
       const errors = handleError(err);
       res.status(400).json({ errors });
@@ -48,8 +64,15 @@ module.exports = {
         return res.status(400).json({ message: 'Please enter all the fields' });
       }
 
-      const user = await User.create({ username, email, password });
+      const user = await User.create({
+        username,
+        email,
+        password,
+        ...generateMockUserParams(),
+      });
+
       const token = createToken(user._id);
+      delete user.password;
 
       console.log(user);
 
@@ -64,7 +87,12 @@ module.exports = {
       });
       res
         .status(201)
-        .json({ status: 'ok', message: 'User successfully created!' });
+        .json({
+          status: 'ok',
+          message: 'User successfully created!',
+          user,
+          hasToken: true,
+        });
     } catch (err) {
       const errors = handleError(err);
       res.status(400).json({ errors });
