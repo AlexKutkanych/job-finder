@@ -37,6 +37,11 @@ const AuthProvider = ({ children }) => {
     }
   }, [getUserTokenQuery?.data]);
 
+  const saveUser = (user) => {
+    setUser(user);
+    localStorage.setItem('user', JSON.stringify(user));
+  };
+
   const setUser = (user) => {
     setAuth((state) => ({
       ...state,
@@ -65,6 +70,7 @@ const AuthProvider = ({ children }) => {
         setAuth,
         resetAuth,
         setUser,
+        saveUser,
         handleSuccessLogin,
       }}
     >

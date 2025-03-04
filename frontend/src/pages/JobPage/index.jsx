@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -28,7 +28,7 @@ export default function JobPage() {
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
   let params = useParams();
-  const { auth, setUser } = useAuth();
+  const { auth, saveUser } = useAuth();
 
   const searchJobByIdQuery = useQuery({
     queryKey: ['selectedJob'],
@@ -56,11 +56,7 @@ export default function JobPage() {
       );
       setSnackbarMessage(message);
       setOpen(true);
-      setUser(bookmarkJobQuery?.data?.user);
-      localStorage.setItem(
-        'user',
-        JSON.stringify(bookmarkJobQuery?.data?.user)
-      );
+      saveUser(bookmarkJobQuery?.data?.user);
     }
   }, [bookmarkJobQuery?.isSuccess]);
 
@@ -68,23 +64,23 @@ export default function JobPage() {
     if (applyForJobQuery?.isSuccess) {
       setSnackbarMessage('Successfully applied for job!');
       setOpen(true);
-      setUser(applyForJobQuery?.data?.user);
-      localStorage.setItem(
-        'user',
-        JSON.stringify(applyForJobQuery?.data?.user)
-      );
+      saveUser(applyForJobQuery?.data?.user);
     }
   }, [applyForJobQuery?.isSuccess]);
 
-  const isJobApplied = useMemo(() => {
-    const user = auth?.user || bookmarkJobQuery?.data?.user;
-    return user?.jobsApplied?.includes(params?.id);
-  }, [auth?.user, bookmarkJobQuery?.data?.user, params?.id]);
+  const hasJobId = useCallback(
+    (type) => {
+      const user = auth?.user || bookmarkJobQuery?.data?.user;
 
-  const isJobSaved = useMemo(() => {
-    const user = auth?.user || bookmarkJobQuery?.data?.user;
-    return user?.savedJobs?.includes(params?.id);
-  }, [auth?.user, bookmarkJobQuery?.data?.user, params?.id]);
+      if (!Object.keys(user)?.length) return false;
+      const jobIds = user[type].reduce((acc, cur) => {
+        acc.push(cur?._id);
+        return acc;
+      }, []);
+      return jobIds.includes(params?.id);
+    },
+    [auth?.user, bookmarkJobQuery?.data?.user, params?.id]
+  );
 
   console.log(auth, 'auth');
 
@@ -115,7 +111,7 @@ export default function JobPage() {
     requirements,
     responsibilities,
     company,
-    applicants
+    applicants,
   } = currentJob || {};
 
   return (
@@ -150,14 +146,14 @@ export default function JobPage() {
             <CardActions sx={{ p: 2 }}>
               <ActionButton
                 onClick={handleApplyForJob}
-                label={isJobApplied ? 'Applied' : 'Apply'}
+                label={hasJobId('jobsApplied') ? 'Applied' : 'Apply'}
                 size='small'
                 variant='contained'
-                disabled={isJobApplied}
+                disabled={hasJobId('jobsApplied')}
               />
               <ActionButton
                 onClick={handleBookmark}
-                label={isJobSaved ? 'Saved' : 'Save'}
+                label={hasJobId('savedJobs') ? 'Saved' : 'Save'}
                 size='small'
                 variant='outlined'
               />

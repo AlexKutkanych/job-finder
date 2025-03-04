@@ -88,9 +88,17 @@ module.exports = {
 
       await user.save();
 
+      const savedJobs = await Job.find({
+        _id: { $in: user?.savedJobs },
+      }).select('location _id title company');
+
+      const jobsApplied = await Job.find({
+        _id: { $in: user?.jobsApplied },
+      }).select('location _id title company');
+
       return res
         .status(200)
-        .json({ status: 'ok', message: 'Job bookmarked', user });
+        .json({ status: 'ok', message: 'Job bookmarked', user: { ...user?._doc, savedJobs, jobsApplied } });
     } catch (err) {
       const errors = handleError(err);
       return res.status(400).json({ errors });

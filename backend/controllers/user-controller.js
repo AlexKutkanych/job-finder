@@ -1,3 +1,4 @@
+const Job = require('../models/Job');
 const User = require('../models/User');
 const { handleError } = require('../utils/authErrorHandler');
 
@@ -20,9 +21,19 @@ module.exports = {
         return res.status(400).json({ message: 'User not found!' });
       }
 
-      return res
-        .status(200)
-        .json({ status: 'ok', message: 'User profile', user });
+      const savedJobs = await Job.find({
+        _id: { $in: user?.savedJobs },
+      }).select('location _id title company');
+
+      const jobsApplied = await Job.find({
+        _id: { $in: user?.jobsApplied },
+      }).select('location _id title company');
+
+      return res.status(200).json({
+        status: 'ok',
+        message: 'User profile',
+        user: { ...user?._doc, savedJobs, jobsApplied },
+      });
     } catch (err) {
       const errors = handleError(err);
       return res.status(400).json({ errors });
