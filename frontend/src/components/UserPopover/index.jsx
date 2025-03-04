@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Popover from '@mui/material/Popover';
 import Avatar from '@mui/material/Avatar';
@@ -8,7 +8,7 @@ import { Stack } from '@mui/material';
 import { useUserLogout } from '../../hooks/useUserLogout';
 
 export default function UserPopover({ username, avatar }) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const { handleLogout } = useUserLogout();
 
@@ -30,8 +30,7 @@ export default function UserPopover({ username, avatar }) {
         onClick={handleClick}
         sx={{ p: 0, minWidth: 40 }}
       >
-        <Avatar alt={username}
-            src={avatar} sx={{ bgcolor: deepOrange[500] }} />
+        <Avatar alt={username} src={avatar} sx={{ bgcolor: deepOrange[500] }} />
       </Button>
       <Popover
         id={id}

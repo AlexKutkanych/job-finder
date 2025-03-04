@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Link, useParams } from 'react-router';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useParams } from 'react-router';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -12,11 +12,12 @@ import List from '@mui/material/List';
 import CoreListItem from '@mui/material/ListItem';
 import { Box, styled } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { applyForJob, bookmarkJob, searchJobById } from '../../utils/jobs';
+import { applyForJob, bookmarkJob, searchJobById } from '../../api/jobs';
 import Loader from '../../components/Loader';
 import { formatDate } from '../../utils/date';
 import { useAuth } from '../../context/AuthContext';
 import Snackbar from '../../components/Snackbar';
+import NoJob from '../../components/NoJob';
 
 const ListItem = styled(CoreListItem)({
   fontSize: '.875rem',
@@ -71,18 +72,17 @@ export default function JobPage() {
   const hasJobId = useCallback(
     (type) => {
       const user = auth?.user || bookmarkJobQuery?.data?.user;
+      debugger;
 
       if (!Object.keys(user)?.length) return false;
       const jobIds = user[type].reduce((acc, cur) => {
-        acc.push(cur?._id);
+        acc.push(cur);
         return acc;
       }, []);
       return jobIds.includes(params?.id);
     },
     [auth?.user, bookmarkJobQuery?.data?.user, params?.id]
   );
-
-  console.log(auth, 'auth');
 
   const handleApplyForJob = () => {
     applyForJobQuery.mutate({ userId: auth?.user?._id, jobId: params?.id });
@@ -117,11 +117,7 @@ export default function JobPage() {
   return (
     <Stack spacing={2}>
       {isPending ? <Loader /> : null}
-      {isError ? (
-        <Typography>
-          Job not found! Go back to <Link to='/search'>Search page</Link>
-        </Typography>
-      ) : null}
+      {isError ? <NoJob /> : null}
       {isSuccess ? (
         <>
           <Card>

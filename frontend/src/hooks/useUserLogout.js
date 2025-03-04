@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { logoutUser } from '../utils/auth';
+import { logoutUser } from '../api/auth';
 
 export const useUserLogout = () => {
   const { resetAuth } = useAuth();

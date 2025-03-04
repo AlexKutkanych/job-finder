@@ -7,13 +7,12 @@ const requireAuth = (req, res, next) => {
     return res.status(403).json({ message: 'Token not present!' });
   }
 
-  jwt.verify(token, 'super secret string', (error, decodedToken) => {
+  jwt.verify(token, process.env.AUTH_SECRET, (error, decodedToken) => {
     if (error) {
       console.log(error, 'Incorrect login');
       return res.status(403).json({ message: 'Incorrect token!' });
     }
 
-    console.log(decodedToken, 'token');
     req.userId = decodedToken?.id;
     next();
   });

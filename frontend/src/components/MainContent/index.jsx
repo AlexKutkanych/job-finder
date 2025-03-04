@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import Home from '../../pages/Home';
@@ -18,7 +18,6 @@ export default function MainContent() {
   const hasToken = auth?.hasToken;
   const isLoggedIn = hasToken && auth?.user?.username;
 
-  console.log(auth, 'auth');
   return (
     <Container
       maxWidth='lg'

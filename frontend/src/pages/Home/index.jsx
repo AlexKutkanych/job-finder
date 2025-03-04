@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -12,14 +12,14 @@ export default function Home() {
   const { resetSearchParams } = useSearch();
   const location = useLocation();
 
-  React.useEffect(() => {
+  useEffect(() => {
     resetSearchParams();
   }, [location]);
 
   return (
     <Box
       id='hero'
-      sx={(theme) => ({
+      sx={() => ({
         width: '100%',
       })}
     >

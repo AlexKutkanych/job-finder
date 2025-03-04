@@ -16,7 +16,7 @@ module.exports = {
   async getProfile(req, res) {
     try {
       const user = await User.findById(req?.userId).select('-password');
-      console.log(user);
+
       if (!user) {
         return res.status(400).json({ message: 'User not found!' });
       }

@@ -22,8 +22,6 @@ export default function CountryCitySearch({
     setSearch((state) => ({ ...state, ...values }));
   }, [values]);
 
-  console.log(cities, 'cities');
-
   const onChange = (event) => {
     const { name, value } = event.target;
     setSearch((state) => ({

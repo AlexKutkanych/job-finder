@@ -6,7 +6,7 @@ import { Stack, Typography } from '@mui/material';
 import SearchPanel from '../../components/SearchPanel';
 import SearchResults from '../../components/SearchResults';
 import { useSearch } from '../../context/SearchContext';
-import { searchJobs } from '../../utils/jobs';
+import { searchJobs } from '../../api/jobs';
 import Loader from '../../components/Loader';
 
 export default function Search() {

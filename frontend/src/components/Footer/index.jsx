@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -10,7 +10,7 @@ import Copyright from '../Copyright';
 
 export default function Footer() {
   return (
-    <React.Fragment>
+    <>
       <Divider />
       <Container
         sx={{
@@ -60,6 +60,6 @@ export default function Footer() {
           <Copyright />
         </Box>
       </Container>
-    </React.Fragment>
+    </>
   );
 }

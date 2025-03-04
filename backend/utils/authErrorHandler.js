@@ -1,6 +1,5 @@
 module.exports = {
   handleError(err) {
-    console.log(err.message, err.code, 'err');
     let errors = {
       username: '',
       email: '',

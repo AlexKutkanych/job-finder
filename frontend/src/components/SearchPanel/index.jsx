@@ -50,7 +50,6 @@ export default function SearchPanel({ onSubmit, isLoading }) {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log(onSubmit, 'searching...');
     onSubmit(searchParams);
   };
 

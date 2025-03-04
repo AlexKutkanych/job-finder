@@ -38,12 +38,6 @@ const userSchema = new Schema({
 });
 
 // fire after document saved to DB
-// userSchema.post('save', async function (doc, next) {
-//   console.log(doc);
-//   next();
-// });
-
-// fire after document saved to DB
 userSchema.pre('save', async function (next) {
   // 'this' refers to User before create & save
   const salt = await bcrypt.genSalt()
@@ -65,15 +59,6 @@ userSchema.statics.login = async function(email, password) {
   }
   throw Error('incorrect password')
 }
-
-// userSchema.pre('save', async function (next) {
-//   if (this.isNew || this.isModified('password')) {
-//     const saltRounds = 10;
-//     this.password = await bcrypt.hash(this.password, saltRounds);
-//   }
-
-//   next();
-// });
 
 userSchema.methods.isCorrectPassword = async function (password) {
   return bcrypt.compare(password, this.password);

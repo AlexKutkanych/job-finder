@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -14,7 +14,7 @@ export default function ProfileJobs({ title, jobs = [], removeFromBookmarks }) {
           {jobs?.length ? (
             <List>
               {jobs.map(({ _id, title, location, company }) => (
-                <ListItem sx={{ columnGap: 2 }}>
+                <ListItem sx={{ columnGap: 2 }} key={_id}>
                   <Link
                     href={`/job/${_id}`}
                     variant='body1'

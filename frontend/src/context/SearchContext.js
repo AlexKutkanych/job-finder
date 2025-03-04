@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState } from 'react';
-import allJobs from '../mock/jobs';
 
 const initialSearchParams = {
   jobCountry: 'all',
@@ -13,8 +12,7 @@ const SearchContext = createContext(initialSearchParams);
 
 const SearchProvider = ({ children }) => {
   const [searchParams, setSearchParams] = useState(initialSearchParams);
-  const [jobs, setJobs] = useState(allJobs);
-  const [currentJob, setCurrentJob] = useState(null);
+  const [jobs, setJobs] = useState([]);
   const [cities, setCities] = useState([{ id: 'all', label: 'All cities' }]);
 
   const [isReset, setIsReset] = useState(false);
@@ -38,7 +36,6 @@ const SearchProvider = ({ children }) => {
         // searchJobs,
         isReset,
         setIsReset,
-        currentJob,
       }}
     >
       {children}

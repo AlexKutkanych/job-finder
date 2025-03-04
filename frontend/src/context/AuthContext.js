@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { getUserToken } from '../utils/user';
+import { getUserToken } from '../api/user';
 import getFromLocalStorage from '../utils/getFromLocalStorage';
 
 const initialUser = { hasToken: false, user: {} };

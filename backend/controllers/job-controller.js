@@ -98,7 +98,11 @@ module.exports = {
 
       return res
         .status(200)
-        .json({ status: 'ok', message: 'Job bookmarked', user: { ...user?._doc, savedJobs, jobsApplied } });
+        .json({
+          status: 'ok',
+          message: 'Job bookmarked',
+          user: { ...user?._doc, savedJobs, jobsApplied },
+        });
     } catch (err) {
       const errors = handleError(err);
       return res.status(400).json({ errors });

@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
-import { loginUser } from '../../utils/auth';
+import { loginUser } from '../../api/auth';
 import { useAuthErrorHandler } from '../../hooks/useAuthErrorHandler';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';

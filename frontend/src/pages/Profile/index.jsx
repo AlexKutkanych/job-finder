@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router';
-import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import Loader from '../../components/Loader';
-import { getUserProfile } from '../../utils/user';
+import { getUserProfile } from '../../api/user';
 import UserCard from '../../components/UserCard';
 import ProfileJobs from '../../components/ProfileJobs';
 import { useAuth } from '../../context/AuthContext';
-import { bookmarkJob } from '../../utils/jobs';
+import { bookmarkJob } from '../../api/jobs';
+import NoJob from '../../components/NoJob';
 
 export default function ProfilePage() {
   const { auth, saveUser } = useAuth();
@@ -45,7 +44,6 @@ export default function ProfilePage() {
   }, [data?.user?.jobsApplied]);
 
   const user = data?.user;
-  console.log(appliedJobs, 'appliedJobs');
 
   const handleRemoveBookmark = (jobId) => {
     bookmarkJobQuery.mutate({ userId: auth?.user?._id, jobId });
@@ -54,11 +52,7 @@ export default function ProfilePage() {
   return (
     <Stack spacing={2}>
       {isPending ? <Loader /> : null}
-      {isError ? (
-        <Typography>
-          Job not found! Go back to <Link to='/search'>Search page</Link>
-        </Typography>
-      ) : null}
+      {isError ? <NoJob /> : null}
       {isSuccess ? (
         <>
           <UserCard user={user} />

@@ -3,9 +3,8 @@ var jwt = require('jsonwebtoken');
 const { COOKIE_MAX_AGE } = require('../utils/constants');
 const { handleError } = require('../utils/authErrorHandler');
 
-// TODO: move super secret to env
 const createToken = (id) =>
-  jwt.sign({ id }, 'super secret string', { expiresIn: COOKIE_MAX_AGE });
+  jwt.sign({ id }, process.env.AUTH_SECRET, { expiresIn: COOKIE_MAX_AGE });
 
 const generateMockUserParams = () => {
   const randomImg = Math.round(Math.random(0, 5)) * 10;
@@ -30,7 +29,7 @@ module.exports = {
       }
 
       const user = await User.login(email, password);
-      console.log(user, 'user');
+
       if (!user) {
         return res
           .status(400)
@@ -74,8 +73,6 @@ module.exports = {
       const token = createToken(user._id);
       delete user.password;
 
-      console.log(user);
-
       /* 
         to make cookies set in browser (due to different domains):
         - add localhost to cors whitelist
@@ -85,14 +82,12 @@ module.exports = {
         httpOnly: true,
         maxAge: COOKIE_MAX_AGE * 1000,
       });
-      res
-        .status(201)
-        .json({
-          status: 'ok',
-          message: 'User successfully created!',
-          user,
-          hasToken: true,
-        });
+      res.status(201).json({
+        status: 'ok',
+        message: 'User successfully created!',
+        user,
+        hasToken: true,
+      });
     } catch (err) {
       const errors = handleError(err);
       res.status(400).json({ errors });

@@ -14,11 +14,11 @@ export const searchJobById = async (id) => {
 };
 
 export const bookmarkJob = async (body) => {
-  const response = await apiClient.post(JOBS_API_ROUTES.BOOKMARK_JOB, body);
+  const response = await apiClient.patch(JOBS_API_ROUTES.BOOKMARK_JOB, body);
   return response.data;
 };
 
 export const applyForJob = async (body) => {
-  const response = await apiClient.post(JOBS_API_ROUTES.APPLY_FOR_JOB, body);
+  const response = await apiClient.patch(JOBS_API_ROUTES.APPLY_FOR_JOB, body);
   return response.data;
 };

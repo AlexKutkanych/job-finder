@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -12,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
-import { createUser } from '../../utils/auth';
+import { createUser } from '../../api/auth';
 import { useAuthErrorHandler } from '../../hooks/useAuthErrorHandler';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -67,7 +66,7 @@ export default function SignUp() {
   const [nameError, setNameError] = useState(false);
   const [nameErrorMessage, setNameErrorMessage] = useState('');
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const { errorMessage, authErrorHandler } = useAuthErrorHandler();
 
@@ -157,7 +156,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 id='name'
-                placeholder='Jon Snow'
+                placeholder='Stepan Bandera'
                 error={nameError}
                 helperText={nameErrorMessage}
                 color={nameError ? 'error' : 'primary'}
