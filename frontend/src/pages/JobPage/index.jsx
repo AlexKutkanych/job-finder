@@ -18,6 +18,7 @@ import { formatDate } from '../../utils/date';
 import { useAuth } from '../../context/AuthContext';
 import Snackbar from '../../components/Snackbar';
 import NoJob from '../../components/NoJob';
+import { getSaveJobMessage } from '../../utils/snackbarMessages';
 
 const ListItem = styled(CoreListItem)({
   fontSize: '.875rem',
@@ -44,16 +45,12 @@ export default function JobPage() {
     mutationFn: applyForJob,
   });
 
-  const getSaveJobMessage = (savedJobs = []) => {
-    return savedJobs?.includes(params?.id)
-      ? 'Job saved to bookmarks!'
-      : 'Job removed from bookmarks!';
-  };
-
   useEffect(() => {
     if (bookmarkJobQuery?.isSuccess) {
+      debugger;
       const message = getSaveJobMessage(
-        bookmarkJobQuery?.data?.user?.savedJobs
+        bookmarkJobQuery?.data?.user?.savedJobs,
+        params?.id
       );
       setSnackbarMessage(message);
       setOpen(true);
@@ -76,12 +73,12 @@ export default function JobPage() {
 
       if (!Object.keys(user)?.length) return false;
       const jobIds = user[type].reduce((acc, cur) => {
-        acc.push(cur);
+        acc.push(cur?._id);
         return acc;
       }, []);
       return jobIds.includes(params?.id);
     },
-    [auth?.user, bookmarkJobQuery?.data?.user, params?.id]
+    [auth?.user, params?.id]
   );
 
   const handleApplyForJob = () => {

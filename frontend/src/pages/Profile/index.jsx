@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Stack from '@mui/material/Stack';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 import Loader from '../../components/Loader';
 import { getUserProfile } from '../../api/user';
 import UserCard from '../../components/UserCard';
@@ -8,12 +9,18 @@ import ProfileJobs from '../../components/ProfileJobs';
 import { useAuth } from '../../context/AuthContext';
 import { bookmarkJob } from '../../api/jobs';
 import NoJob from '../../components/NoJob';
+import Snackbar from '../../components/Snackbar';
+import { getSaveJobMessage } from '../../utils/snackbarMessages';
 
 export default function ProfilePage() {
   const { auth, saveUser } = useAuth();
 
   const [savedJobs, setSavedJobs] = useState([]);
   const [appliedJobs, setAppliedJobs] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+
+  let params = useParams();
 
   const getProfileQuery = useQuery({
     queryKey: ['getProfile'],
@@ -29,7 +36,13 @@ export default function ProfilePage() {
   useEffect(() => {
     if (bookmarkJobQuery?.isSuccess) {
       const user = bookmarkJobQuery?.data?.user;
+      const message = getSaveJobMessage(
+        bookmarkJobQuery?.data?.user?.savedJobs,
+        params?.id
+      );
+      setSnackbarMessage(message);
       saveUser(user);
+      setOpen(true);
       setSavedJobs(user?.savedJobs ?? []);
       setAppliedJobs(user?.jobsApplied ?? []);
     }
@@ -64,6 +77,7 @@ export default function ProfilePage() {
           />
         </>
       ) : null}
+      <Snackbar open={open} setOpen={setOpen} message={snackbarMessage} />
     </Stack>
   );
 }

@@ -33,7 +33,6 @@ const SearchProvider = ({ children }) => {
         setCities,
         jobs,
         setJobs,
-        // searchJobs,
         isReset,
         setIsReset,
       }}

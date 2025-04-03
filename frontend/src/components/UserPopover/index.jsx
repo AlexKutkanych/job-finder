@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import Popover from '@mui/material/Popover';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -10,7 +10,14 @@ import { useUserLogout } from '../../hooks/useUserLogout';
 export default function UserPopover({ username, avatar }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
+  const location = useLocation();
   const { handleLogout } = useUserLogout();
+
+  useEffect(() => {
+    if (location?.pathname && anchorEl) {
+      handleClose();
+    }
+  }, [location?.pathname]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -21,7 +28,7 @@ export default function UserPopover({ username, avatar }) {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const id = open ? 'simple-popover' : '';
 
   return (
     <div>
